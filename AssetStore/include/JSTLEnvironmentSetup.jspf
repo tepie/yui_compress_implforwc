@@ -18,4 +18,7 @@
 <%--
 Example page include:
 <script language="javascript" src="<c:out value="${jsSearchURI}"/>" ></script>
+
+Example URL Request with minify (value can be whatever):
+https://localhost/webapp/wcs/stores/servlet/GenericPageView?minify=true&catalogId=100&langId=-1&storeId=100
 --%>
