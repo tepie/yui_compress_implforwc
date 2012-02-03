@@ -28,7 +28,7 @@
 		<delete file="${prop.js.src.output}"  quiet="true" />
 	</target>
 	
-	<target name="compress.js.loop">
+	<target name="compress.js.loop" depends="clean.js.loop">
 		<!-- http://ant.1045680.n5.nabble.com/Using-foreach-td1354624.html -->
 		<foreach target="compress.js.each" param="each">
 			<path>
@@ -48,7 +48,7 @@
 		<echo message="destination is ${prop.js.src.output}" />
 		
 		<java jar="${prop.jar.yui_compress}" fork="yes">
-			<arg line="--type js --nomunge -o ${prop.js.src.output} ${each}"/>
+			<arg line="--type js --nomunge --preserve-semi -o ${prop.js.src.output} ${each}"/>
 			<classpath>
 				<pathelement location="$prop.jar.yui_compress}"/>
 				<fileset dir="lib">
@@ -56,6 +56,8 @@
 				</fileset> 
 			</classpath>
 		</java>	
+		
+		<echo message="completed minify of ${prop.js.src.output}" />
 	</target>
 
 </project>
