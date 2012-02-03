@@ -1,0 +1,21 @@
+<%--
+  This is an example JSP fragement that would include the following
+  to setup the minify testing in the toolkit. 
+--%>
+
+<c:set var="releaseVersion" value="1.05.02" scope="page" />
+
+<c:set var="minifyParam" value="${WCParam.minify}"/>
+<c:set var="minifyFileNameSuffix" value="" scope="page" />
+
+<c:if test="${ !empty minifyParam}">
+    <c:set var="minifyFileNameSuffix" value="-min" scope="page" />
+</c:if>
+
+<c:set var="storeJavascriptDir" value="${sdb.jspStoreDirFilePath}javascript" scope="page" />
+<c:set var="jsSearchURI" value="${storeJavascriptDir}/search${minifyFileNameSuffix}.js?v=${releaseVersion}" scope="page" />
+
+<%--
+Example page include:
+<script language="javascript" src="<c:out value="${jsSearchURI}"/>" ></script>
+--%>
