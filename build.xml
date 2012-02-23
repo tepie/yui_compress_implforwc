@@ -12,27 +12,30 @@
     </path>
 
 	<target name="clean.js.loop">
-		
 		<!-- http://ant.1045680.n5.nabble.com/Using-foreach-td1354624.html -->
-		<foreach target="clean.js.each" param="each">
+		<foreach target="clean.js.each" param="clean">
 			<path>
-    		    <fileset dir="${prop.js.src.dir}" includes="**/*.js" excludes="**/*jquery* **/*s7* **/*coremetrics* **/*swfobject*" />
+    		    <fileset dir="${prop.js.src.dir}" includes="**/*.js" excludes="**/*jquery* **/*s7* **/*coremetrics* **/*swfobject* **/*-min.js" />
   			 </path>
 		</foreach>
 	</target>
 	
 	<target name="clean.js.each">
-		<basename file="${each}" property="basename" suffix=".js" /> 
+		<echo message="source file is ${clean}" />
+		<basename file="${clean}" property="basename" suffix=".js" /> 
+		<echo message="basename is ${basename}" />
+		
 		<property name="prop.js.src.output" value="${prop.js.src.dir}/${basename}-min.js" />
-		<echo message="file to delete is ${prop.js.src.output}" />
+		<echo message="deleting ${prop.js.src.output}" />
+		
 		<delete file="${prop.js.src.output}"  quiet="true" />
 	</target>
 	
-	<target name="compress.js.loop" depends="clean.js.loop">
+	<target name="compress.js.loop">
 		<!-- http://ant.1045680.n5.nabble.com/Using-foreach-td1354624.html -->
 		<foreach target="compress.js.each" param="each">
 			<path>
-    		    <fileset dir="${prop.js.src.dir}" includes="**/*.js" excludes="**/*jquery* **/*s7* **/*coremetrics* **/*swfobject*" />
+    		    <fileset dir="${prop.js.src.dir}" includes="**/*.js" excludes="**/*jquery* **/*s7* **/*coremetrics* **/*swfobject* **/*-min.js" />
   			 </path>
 		</foreach>
 	</target>
