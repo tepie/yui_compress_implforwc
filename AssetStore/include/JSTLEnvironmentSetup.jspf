@@ -3,22 +3,59 @@
   to setup the minify testing in the toolkit. 
 --%>
 
-<c:set var="releaseVersion" value="1.05.02" scope="page" />
+<fmt:setBundle basename="${jspStoreDir}buildnumber" var="buildBumberText" />
+<fmt:message var="releaseVersion" key="build.number" bundle="${buildBumberText}" scope="page" />
 
-<c:set var="minifyParam" value="${WCParam.minify}"/>
+<% 
+// true or false
+pageContext.setAttribute("minifyUseByDefault",com.client.common.constants.EnvDependentConstants.MINIFY_USE_BY_DEFAULT);
+// default is "-min"
+pageContext.setAttribute("minifyDefaultFileNameSuffix",com.client.common.constants.EnvDependentConstants.MINIFY_FILENAME_SUFFIX);
+%>
+
 <c:set var="minifyFileNameSuffix" value="" scope="page" />
 
-<c:if test="${ !empty minifyParam}">
-    <c:set var="minifyFileNameSuffix" value="-min" scope="page" />
-</c:if>
+<c:choose>
+	<c:when test="${minifyUseByDefault eq 'true' }">
+		<%-- This is the production scenario, minificiation should be used by default,
+		but if for some reason for debuging is needed, the minify parameter can be passed
+		to load the page with the normal JS --%>
+		<c:set var="minifyParam" value="${WCParam.minify}"/>
+		<c:if test="${empty minifyParam}">
+			<c:set var="minifyFileNameSuffix" value="${minifyDefaultFileNameSuffix}" scope="page" />
+		</c:if>
+	</c:when>
+	<c:otherwise>
+		<%-- This is the developer scenario, when they pass the minify parameter to the servlet,
+		the JSP will load the minified version of the JS for the page --%>
+		<c:set var="minifyParam" value="${WCParam.minify}"/>
+		<c:if test="${ !empty minifyParam}">
+			<c:set var="minifyFileNameSuffix" value="${minifyDefaultFileNameSuffix}" scope="page" />
+		</c:if>
+	</c:otherwise>
+</c:choose>
 
 <c:set var="storeJavascriptDir" value="${sdb.jspStoreDirFilePath}javascript" scope="page" />
 <c:set var="jsSearchURI" value="${storeJavascriptDir}/search${minifyFileNameSuffix}.js?v=${releaseVersion}" scope="page" />
 
 <%--
-Example page include:
+Example page include: 
 <script language="javascript" src="<c:out value="${jsSearchURI}"/>" ></script>
 
-Example URL Request with minify (value can be whatever):
-https://localhost/webapp/wcs/stores/servlet/GenericPageView?minify=true&catalogId=100&langId=-1&storeId=100
+- Case 1: minifyUseByDefault = true, WCParam.minify is empty
+-- https://localhost/webapp/wcs/stores/servlet/GenericPageView?&catalogId=100&langId=-1&storeId=100
+-- "jsSearchURI" will be minified
+
+- Case 2: minifyUseByDefault = true, WCParam.minify is NOT empty
+-- https://localhost/webapp/wcs/stores/servlet/GenericPageView?&catalogId=100&langId=-1&storeId=100&minify=true
+-- "jsSearchURI" will NOT be minified
+
+- Case 3: minifyUseByDefault = false, WCParam.minify is empty
+-- https://localhost/webapp/wcs/stores/servlet/GenericPageView?&catalogId=100&langId=-1&storeId=100
+-- "jsSearchURI" will NOT be minified
+
+- Case 4: minifyUseByDefault = false, WCParam.minify is NOT empty
+-- https://localhost/webapp/wcs/stores/servlet/GenericPageView?&catalogId=100&langId=-1&storeId=100&minify=true
+-- "jsSearchURI" will be minified
+
 --%>
