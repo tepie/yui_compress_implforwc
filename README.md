@@ -44,3 +44,8 @@ you can just put this project in your eclipse workspace, or just checkout to the
 
 * `clean.js.loop` - Will delete the min files in the source directory
 * `compress.js.loop` - Will minify all the files in the source directory
+
+### Embedding into ongoing build / deployment process 
+
+The normal implementation for WC version 7+ is WCBD. You'll want to add this process at the point when your static
+files are synced to the web server. Look for in `wcbd-build-common.xml` of your wcbd files.
