@@ -7,10 +7,13 @@
 <fmt:message var="releaseVersion" key="build.number" bundle="${buildBumberText}" scope="page" />
 
 <% 
-// true or false
-pageContext.setAttribute("minifyUseByDefault",com.client.common.constants.EnvDependentConstants.MINIFY_USE_BY_DEFAULT);
-// default is "-min"
-pageContext.setAttribute("minifyDefaultFileNameSuffix",com.client.common.constants.EnvDependentConstants.MINIFY_FILENAME_SUFFIX);
+try{
+	pageContext.setAttribute("minifyUseByDefault",com.crossview.commerce.common.constants.CVEnvDependentConstants.MINIFY_USE_BY_DEFAULT);
+	pageContext.setAttribute("minifyDefaultFileNameSuffix",com.crossview.commerce.common.constants.CVEnvDependentConstants.MINIFY_FILENAME_SUFFIX);
+} catch (Exception ex){
+	pageContext.setAttribute("minifyUseByDefault","false");
+	pageContext.setAttribute("minifyUseByDefault","-min");
+}
 %>
 
 <c:set var="minifyFileNameSuffix" value="" scope="page" />

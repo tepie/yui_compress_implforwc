@@ -31,9 +31,8 @@ to enable usage of the minified scripts during development.
 
 `<script language="javascript" src="<c:out value="${jsSearchURI}"/>" ></script>`
 
-* Example URL Request with minify (value can be whatever):
-
-https://localhost/webapp/wcs/stores/servlet/GenericPageView?minify=true&catalogId=100&langId=-1&storeId=100
+* Parameter and environment configuration needs to be in place to enable / disable minification as needed
+* See the JSTLEnvironmentSetup for more details on the setup
 
 Installation
 -----------
